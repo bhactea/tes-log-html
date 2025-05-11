@@ -1,10 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
   <application>
-    <!-- Wajib: memberi tahu LSPosed ini modul -->
     <meta-data android:name="xposedmodule" android:value="true"/>
-    <!-- Deskripsi modul -->
-    <meta-data
-        android:name="xposeddescription"
-        android:value="Log HTML WebView HarpaMobileHR"/>
+    <meta-data android:name="xposeddescription"
+               android:value="Log HTML WebView HarpaMobileHR"/>
   </application>
 </manifest>
