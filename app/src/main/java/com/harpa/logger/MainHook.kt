@@ -15,40 +15,63 @@ import java.util.*
 
 class MainHook : IXposedHookLoadPackage {
   override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
-    if (lpparam.packageName != "com.harpamobilehr") return
-    XposedBridge.log("HarpaLogger: hook WebViewClient in ${lpparam.packageName}")
+    if (lpparam.packageName != "com.harpamobilehr" ||
+        lpparam.processName != lpparam.packageName) return
+
+    XposedBridge.log("HarpaLogger: hooking WebViewClient in ${lpparam.packageName}")
 
     try {
+      val hookImpl = object : XC_MethodHook() {
+        override fun afterHookedMethod(param: MethodHookParam) {
+          val webView = param.args[0] as? WebView ?: return
+          val url     = param.args[1] as? String ?: return
+          if (!url.contains("harpamobilehr")) return
+
+          webView.post {
+            webView.evaluateJavascript(
+              "(function(){return document.documentElement.outerHTML;})();"
+            ) { html ->
+              html?.takeIf { it.isNotBlank() }?.let { saveHtml(it) }
+            }
+          }
+        }
+      }
+
       XposedHelpers.findAndHookMethod(
         "android.webkit.WebViewClient",
         lpparam.classLoader,
         "onPageFinished",
         WebView::class.java,
         String::class.java,
-        object : XC_MethodHook() {
-          override fun afterHookedMethod(param: MethodHookParam) {
-            val webView = param.args[0] as? WebView ?: return
-            webView.evaluateJavascript("(function(){return document.documentElement.outerHTML;})();") { html ->
-              saveHtml(html)
-            }
-          }
-        }
+        hookImpl
+      )
+      // Hook Chromium-based subclass
+      XposedHelpers.findAndHookMethod(
+        "androidx.webkit.internal.WebViewClientImpl",
+        lpparam.classLoader,
+        "onPageFinished",
+        WebView::class.java,
+        String::class.java,
+        hookImpl
       )
     } catch (e: Throwable) {
-      XposedBridge.log("HarpaLogger: hook failed: ${e.message}")
+      XposedBridge.log("HarpaLogger: failed to hook - ${e.message}")
     }
   }
 
   private fun saveHtml(html: String) {
     try {
-      val ts = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
-      val dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-      if (!dir.exists()) dir.mkdirs()
-      val file = File(dir, "harpa_html_$ts.html")
-      FileOutputStream(file).use { it.write(html.toByteArray()) }
+      val ts    = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
+      val dir   = Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_DOWNLOADS)
+      if (!dir.exists() || !dir.canWrite()) {
+        // fallback ke filesDir jika perlu
+      }
+      val file  = File(dir, "harpa_html_$ts.html")
+      FileOutputStream(file).use { it.write(html.toByteArray(Charsets.UTF_8)) }
       XposedBridge.log("HarpaLogger: saved HTML to ${file.absolutePath}")
     } catch (e: Exception) {
-      XposedBridge.log("HarpaLogger: save error: ${e.message}")
+      XposedBridge.log("HarpaLogger: save error - ${e.message}")
     }
   }
 }
