@@ -1,16 +1,21 @@
 plugins {
-  id("com.android.library")
+  id("com.android.application")
   kotlin("android")
 }
 
 android {
-  namespace   = "com.harpa.logger"
-  compileSdk  = 33
+  compileSdk = 33
 
   defaultConfig {
-    minSdk    = 21
+    applicationId = "com.harpa.logger"
+    minSdk = 21
     targetSdk = 33
+    versionCode = 1
+    versionName = "1.0"
   }
+  // ... sisanya tetap sama ...
+}
+
 
   buildTypes {                      // ← PASTIKAN DI SINI
     release {
