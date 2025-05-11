@@ -1,26 +1,19 @@
+rootProject.name = "tes-log-html"
+include(":app")
+
 pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
-        // Tambahkan repositori Xposed API
-        maven {
-            url = uri("https://api.xposed.info/")
-        }
-    }
+  repositories {
+    gradlePluginPortal()
+    google()
+    mavenCentral()
+  }
 }
 
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-        // Pastikan urutan: mavenCentral sebelum Xposed
-        maven {
-            url = uri("https://api.xposed.info/")
-        }
-    }
+  repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+  repositories {
+    google()
+    mavenCentral()
+    maven { url = uri("https://api.xposed.info/") }
+  }
 }
-
-rootProject.name = "tes-log-html"
-include(":app")
