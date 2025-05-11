@@ -15,6 +15,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "TemplateHook"
+rootProject.name = "tes-log-html"
 include(":app")
  
