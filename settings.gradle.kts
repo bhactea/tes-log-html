@@ -1,6 +1,3 @@
-rootProject.name = "tes-log-html"
-include(":app")
-
 pluginManagement {
   repositories {
     gradlePluginPortal()
@@ -17,3 +14,6 @@ dependencyResolutionManagement {
     maven { url = uri("https://api.xposed.info/") }
   }
 }
+
+rootProject.name = "tes-log-html"
+include(":app")
