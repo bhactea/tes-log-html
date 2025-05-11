@@ -33,9 +33,13 @@ android {
     jvmTarget = "17"
   }
 
-  // Jika module.prop di assets folder, tidak perlu ini:
-  //sourceSets["main"].assets.srcDir("src/main/assets")
+  
+  // include module.prop yang berada di app/src/main/module.prop
+  sourceSets["main"].resources.srcDir("src/main")
+  // atau:
+  // sourceSets["main"].resources.srcDirs("src/main", "src/main/assets")
 }
+
   
 dependencies {
   compileOnly("de.robv.android.xposed:api:82")
