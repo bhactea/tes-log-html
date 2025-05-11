@@ -1,4 +1,3 @@
-```kotlin
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -38,4 +37,3 @@ android {
 dependencies {
     compileOnly("de.robv.android.xposed:api:82")
 }
-```
