@@ -4,12 +4,22 @@ plugins {
 }
 
 android {
-  namespace       = "com.harpa.logger"
-  compileSdk      = 33
+  namespace   = "com.harpa.logger"
+  compileSdk  = 33
 
   defaultConfig {
-    minSdk        = 21
-    targetSdk     = 33
+    minSdk    = 21
+    targetSdk = 33
+  }
+
+  buildTypes {                      // ← PASTIKAN DI SINI
+    release {
+      isMinifyEnabled = false       // gunakan isMinifyEnabled
+      proguardFiles(
+        getDefaultProguardFile("proguard-android-optimize.txt"),
+        "proguard-rules.pro"
+      )
+    }
   }
 
   compileOptions {
@@ -17,18 +27,7 @@ android {
     targetCompatibility = JavaVersion.VERSION_17
   }
   kotlinOptions {
-    jvmTarget     = "17"
-  }
-
-  // Jika butuh release minify:
-  buildTypes {
-    release {
-      minifyEnabled    = false
-      proguardFiles(
-        getDefaultProguardFile("proguard-android-optimize.txt"),
-        "proguard-rules.pro"
-      )
-    }
+    jvmTarget = "17"
   }
 }
 
