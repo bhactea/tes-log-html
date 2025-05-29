@@ -1,0 +1,7 @@
+id=harpa.logger
+name=Harpa Logger (WebView Hook)
+version=1.0
+versionCode=1
+author=Bhakti Setyawan
+description=Modul log WebView & JS untuk Harpa (React Native)
+minMagisk=24
