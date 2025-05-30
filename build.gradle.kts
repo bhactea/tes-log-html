@@ -1,4 +1,17 @@
-plugins {
-    id("com.android.application") version "8.1.0" apply false
-    kotlin("android") version "1.9.0" apply false
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
 }
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = "HarpaLogger"
+include(":app")
